@@ -9,12 +9,13 @@ import SwiftUI
 
 struct TabbarView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
+    @StateObject private var viewModelWithService = ListViewModel(itemService: UserRepositoryImpl())
     var body: some View {
         TabView {
             
             NavigationStack(path: $appCoordinator.homeTabPath) {
                 
-                ListView()
+                ListView(viewModel: viewModelWithService)
                     .navigationDestination(for: UserAppPages.self) { page in
                         appCoordinator.build(page: page)
                     }
@@ -25,7 +26,7 @@ struct TabbarView: View {
             
             NavigationStack(path: $appCoordinator.favoritesTabPath) {
                 
-                ListView()
+                ListView(viewModel: viewModelWithService)
                     .navigationDestination(for: UserAppPages.self) { page in
                         appCoordinator.build(page: page)
                     }

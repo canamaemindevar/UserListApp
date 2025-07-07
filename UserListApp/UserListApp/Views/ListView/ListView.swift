@@ -8,11 +8,21 @@ import SwiftUI
 
 struct ListView: View {
     @EnvironmentObject private var appCoordinator: AppCoordinator
-
+    @ObservedObject var viewModel: ListViewModel
+    
     var body: some View {
         VStack {
-            Text("ListView")
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    ForEach(viewModel.users, id: \.id) { user in
+                        Text(user.firstName ?? "")
+                    }
+                }
+                .padding()
+            }
         }
-        
+        .onAppear {
+            viewModel.fetchUsers()
+        }
     }
 }
