@@ -17,15 +17,7 @@ struct ListView: View {
                     ForEach(viewModel.users, id: \.id) { user in
                         Text(user.firstName ?? "")
                             .onTapGesture {
-//                                user.selection()
-                                viewModel.writer?.addUser(user, completion: { result in
-                                    switch result {
-                                    case .success(let success):
-                                        print(success)
-                                    case .failure(let failure):
-                                        print(failure)
-                                    }
-                                })
+                                    viewModel.addUserToLocal(user)
                             }
                     }
                 }

@@ -35,3 +35,52 @@ class BaseViewModel: ObservableObject {
         }
     }
 }
+
+extension BaseViewModel {
+    
+    func addUserToLocal(_ user: User) {
+        setLoading(true)
+        writer?.addUser(user) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.setLoading(false)
+                
+                switch result {
+                case .success:
+                    self?.isRequestSuccesfull = true
+                case .failure(let error):
+                    self?.showError(error)
+                }
+            }
+        }
+    }
+
+    func deleteUserFromLocal(_ user: User) {
+        setLoading(true)
+        writer?.deleteUser(user) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.setLoading(false)
+                switch result {
+                case .success:
+                    self?.isRequestSuccesfull = true
+                case .failure(let error):
+                    self?.showError(error)
+                }
+            }
+        }
+    }
+
+    func clearAllUsersFromLocal() {
+        setLoading(true)
+        writer?.clearUsers { [weak self] result in
+            DispatchQueue.main.async {
+                self?.setLoading(false)
+                switch result {
+                case .success:
+                    self?.isRequestSuccesfull = true
+                case .failure(let error):
+                    self?.showError(error)
+                }
+            }
+        }
+    }
+}
