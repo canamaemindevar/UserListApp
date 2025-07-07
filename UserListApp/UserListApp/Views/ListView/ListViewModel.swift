@@ -17,6 +17,7 @@ final class ListViewModel: BaseViewModel {
         self.itemService = itemService
         super.init()
         self.writer = LocalDbManager()
+        self.loadFavorites()
     }
     
     var filteredUsers: [User] {

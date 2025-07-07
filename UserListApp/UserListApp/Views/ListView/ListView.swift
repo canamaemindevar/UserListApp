@@ -24,11 +24,16 @@ struct ListView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 12) {
                     ForEach(viewModel.filteredUsers, id: \.id) { user in
-                        Text(user.firstName ?? "")
-                            .onTapGesture {
-                                viewModel.addUserToLocal(user)
-                                isSearchFocused = false
-                            }
+                        CellView(
+                            uiModel: ItemUIModel(
+                                responseModel: user,
+                                isFavorite: viewModel.isUserFavorited(user),
+                                selection: {
+//                                    appCoordinator.pushToRedTab(.detail(user))
+                                },
+                                onFavoriteToggle: { viewModel.toggleFavorite(for: user) }
+                            )
+                        )
                     }
                 }
                 .padding()

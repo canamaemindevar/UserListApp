@@ -12,6 +12,7 @@ class BaseViewModel: ObservableObject {
     @Published var isErrorShown: Bool = false
     @Published var isLoading: Bool = false
     @Published var isRequestSuccesfull = false
+    @Published var favoriteUserIds: Set<Int> = []
     
     var writer: (any WritableItemService)?
     
@@ -38,23 +39,24 @@ class BaseViewModel: ObservableObject {
 
 extension BaseViewModel {
     
-    func addUserToLocal(_ user: User) {
+    func addUserToLocal(_ user: User, completion: @escaping (Bool) -> Void) {
         setLoading(true)
         writer?.addUser(user) { [weak self] result in
             DispatchQueue.main.async {
                 self?.setLoading(false)
-                
                 switch result {
                 case .success:
                     self?.isRequestSuccesfull = true
+                    completion(true)
                 case .failure(let error):
                     self?.showError(error)
+                    completion(false)
                 }
             }
         }
     }
 
-    func deleteUserFromLocal(_ user: User) {
+    func deleteUserFromLocal(_ user: User, completion: @escaping (Bool) -> Void) {
         setLoading(true)
         writer?.deleteUser(user) { [weak self] result in
             DispatchQueue.main.async {
@@ -62,8 +64,10 @@ extension BaseViewModel {
                 switch result {
                 case .success:
                     self?.isRequestSuccesfull = true
+                    completion(true)
                 case .failure(let error):
                     self?.showError(error)
+                    completion(false)
                 }
             }
         }
@@ -79,6 +83,45 @@ extension BaseViewModel {
                     self?.isRequestSuccesfull = true
                 case .failure(let error):
                     self?.showError(error)
+                }
+            }
+        }
+    }
+}
+
+extension BaseViewModel {
+    
+    func isUserFavorited(_ user: User) -> Bool {
+        guard let id = user.id else { return false }
+        return favoriteUserIds.contains(id)
+    }
+
+    func toggleFavorite(for user: User) {
+        guard let id = user.id else { return }
+
+        if isUserFavorited(user) {
+            deleteUserFromLocal(user, completion: { [weak self] success in
+                if success {
+                    self?.favoriteUserIds.remove(id)
+                }
+            })
+        } else {
+            addUserToLocal(user, completion: { [weak self] success in
+                if success {
+                    self?.favoriteUserIds.insert(id)
+                }
+            })
+        }
+    }
+
+    func loadFavorites() {
+        if let localManager = writer as? ReadableItemService {
+            localManager.loadItems { [weak self] result in
+                if case .success(let response) = result {
+                    let ids = response.users?.compactMap { $0.id } ?? []
+                    DispatchQueue.main.async {
+                        self?.favoriteUserIds = Set(ids)
+                    }
                 }
             }
         }

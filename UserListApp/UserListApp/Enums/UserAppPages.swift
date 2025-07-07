@@ -37,7 +37,7 @@ indirect enum UserAppPages: Identifiable,Hashable {
     var tabIcon: Image {
         switch self {
         case .users:
-                .init(systemName: "person.crop.circle") // person.3.fill
+                .init(systemName: "person.3.fill")
         case .favorites:
                 .init(systemName: "star.fill")
         case .detail:
