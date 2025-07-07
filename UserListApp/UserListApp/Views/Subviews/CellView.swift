@@ -22,8 +22,21 @@ struct CellView: View {
             
             VStack(alignment: .leading, spacing: 8) {
                 
-                // MARK: Üst Bilgi Satırı
+                // MARK: Üst Satır
                 HStack(alignment: .top) {
+                    // Sol tarafta image
+                    AsyncImage(url: URL(string: uiModel.user?.image ?? "")) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Image(systemName: "person.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .frame(width: 50, height: 50)
+                    .clipShape(Circle())
+                    
+                    // Orta kısımda yazılar
                     VStack(alignment: .leading, spacing: 4) {
                         Text("\(uiModel.user?.firstName ?? "-") \(uiModel.user?.lastName ?? "")")
                             .font(.headline)
@@ -36,6 +49,7 @@ struct CellView: View {
                     
                     Spacer()
                     
+                    // Sağ tarafta favorite button
                     Button(action: {
                         uiModel.onFavoriteToggle()
                     }) {
@@ -45,7 +59,7 @@ struct CellView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                // MARK: Alt Bilgi Satırı
+                // MARK: Alt Satır
                 Button(action: uiModel.selection) {
                     HStack {
                         Text("See Detail")
@@ -67,6 +81,5 @@ struct CellView: View {
             )
         }
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .padding(.horizontal)
     }
 }
