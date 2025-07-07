@@ -5,6 +5,6 @@
 //  Created by Emincan Antalyalı on 7.07.2025.
 //
 
-protocol ItemService {
+protocol ReadableItemService {
     func loadItems(completion: @escaping (Result<ItemResponse, NetworkErrors>) -> Void)
 }

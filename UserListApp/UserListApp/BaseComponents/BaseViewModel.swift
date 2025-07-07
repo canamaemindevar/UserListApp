@@ -13,6 +13,8 @@ class BaseViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isRequestSuccesfull = false
     
+    var writer: (any WritableItemService)?
+    
     func showError(_ error: NetworkErrors?) {
         DispatchQueue.main.async {
             self.error = error

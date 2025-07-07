@@ -10,10 +10,12 @@ final class ListViewModel: BaseViewModel {
     
     @Published var users: [User] = []
     
-    private let itemService: ItemService
+    private let itemService: ReadableItemService
     
-    init(itemService: ItemService) {
+    init(itemService: ReadableItemService) {
         self.itemService = itemService
+        super.init()
+        self.writer = LocalDbManager()
     }
 }
 

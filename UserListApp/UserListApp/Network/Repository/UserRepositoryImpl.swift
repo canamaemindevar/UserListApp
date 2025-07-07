@@ -17,7 +17,7 @@ final class UserRepositoryImpl {
     
 }
 
-extension UserRepositoryImpl: ItemService {
+extension UserRepositoryImpl: ReadableItemService {
     func loadItems(completion: @escaping (Result<ItemResponse, NetworkErrors>) -> Void) {
         let req = AppRequest(method: .get, url: AppServices.Users.base.url)
         networkManager.request(req, completion: completion)

@@ -16,6 +16,17 @@ struct ListView: View {
                 LazyVStack(alignment: .leading, spacing: 12) {
                     ForEach(viewModel.users, id: \.id) { user in
                         Text(user.firstName ?? "")
+                            .onTapGesture {
+//                                user.selection()
+                                viewModel.writer?.addUser(user, completion: { result in
+                                    switch result {
+                                    case .success(let success):
+                                        print(success)
+                                    case .failure(let failure):
+                                        print(failure)
+                                    }
+                                })
+                            }
                     }
                 }
                 .padding()

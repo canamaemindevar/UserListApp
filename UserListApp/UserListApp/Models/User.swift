@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct User: Decodable, Hashable {
+struct User: Codable, Hashable {
     
     let id: Int?
     let firstName, lastName, maidenName: String?
@@ -26,12 +26,12 @@ struct User: Decodable, Hashable {
     }
 }
 
-struct Address: Decodable, Hashable {
+struct Address: Codable, Hashable {
     let address, city, state, stateCode: String?
     let postalCode: String?
 }
 
-enum Gender: String, Decodable {
+enum Gender: String, Codable {
     case female
     case male
 }

@@ -17,7 +17,9 @@ enum NetworkErrors: Error, Equatable {
     case clientError(code: Int)
     case serverError(code: Int)
     case unexpectedStatusCode(code: Int)
-    
+    // local db errore
+    case localDBParseError
+    case storageFailure
     
     var errorDescription: String? {
         switch self {
@@ -43,6 +45,10 @@ enum NetworkErrors: Error, Equatable {
             return "clientError" + "HTTP Code: \(code)"
         case .unexpectedStatusCode(code: let code):
             return "unexpectedStatusCode" + "HTTP Code: \(code)"
+        case .localDBParseError:
+            return "LocalDBParseError"
+        case .storageFailure:
+            return "StorageFailure"
         }
     }
 }
