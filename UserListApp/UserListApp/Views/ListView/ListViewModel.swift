@@ -9,6 +9,7 @@ import Foundation
 final class ListViewModel: BaseViewModel {
     
     @Published var users: [User] = []
+    @Published var searchText: String = ""
     
     private let itemService: ReadableItemService
     
@@ -16,6 +17,18 @@ final class ListViewModel: BaseViewModel {
         self.itemService = itemService
         super.init()
         self.writer = LocalDbManager()
+    }
+    
+    var filteredUsers: [User] {
+        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return users
+        }
+        
+        return users.filter {
+            ($0.firstName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            ($0.lastName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            ($0.username?.localizedCaseInsensitiveContains(searchText) ?? false)
+        }
     }
 }
 
