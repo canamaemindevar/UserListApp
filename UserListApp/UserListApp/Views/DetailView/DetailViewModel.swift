@@ -7,9 +7,10 @@
 
 final class DetailViewModel: BaseViewModel {
     
-    let user: ItemUIModel
+    var user: ItemUIModel
     
     init(user: ItemUIModel) {
         self.user = user
     }
+
 }

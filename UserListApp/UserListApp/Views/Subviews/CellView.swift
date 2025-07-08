@@ -44,7 +44,7 @@ struct CellView: View {
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("\(uiModel.user?.age.map { "\($0) yaş" } ?? "") \(uiModel.user?.gender?.rawValue.capitalized ?? "")")
+                        Text("\(uiModel.user?.age.map { "\($0) age" } ?? "") \(uiModel.user?.gender?.rawValue.capitalized ?? "")")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
