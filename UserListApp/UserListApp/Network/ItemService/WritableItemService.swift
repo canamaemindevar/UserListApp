@@ -7,7 +7,7 @@
 import Foundation
 
 protocol WritableItemService {
-    func addUser(_ user: User, completion: @escaping (Result<Void, NetworkErrors>) -> Void)
-    func deleteUser(_ user: User, completion: @escaping (Result<Void, NetworkErrors>) -> Void)
+    func addUser(_ item: ItemUIModel, completion: @escaping (Result<Void, NetworkErrors>) -> Void)
+    func deleteUser(_ item: ItemUIModel, completion: @escaping (Result<Void, NetworkErrors>) -> Void)
     func clearUsers(completion: @escaping (Result<Void, NetworkErrors>) -> Void)
 }

@@ -9,7 +9,7 @@ import SwiftUICore
 struct ItemUIModel: Hashable {
     let user: User?
  
-    let isFavorite: Bool
+    var isFavorite: Bool
     let leftCornerColor: Color
 
     init(

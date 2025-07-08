@@ -39,9 +39,9 @@ class BaseViewModel: ObservableObject {
 
 extension BaseViewModel {
     
-    func addUserToLocal(_ user: ItemUIModel, completion: @escaping (Bool) -> Void) {
+    func addUserToLocal(_ item: ItemUIModel, completion: @escaping (Bool) -> Void) {
         setLoading(true)
-        writer?.addUser(user.user ?? .init()) { [weak self] result in
+        writer?.addUser(item) { [weak self] result in
             DispatchQueue.main.async {
                 self?.setLoading(false)
                 switch result {
@@ -56,9 +56,9 @@ extension BaseViewModel {
         }
     }
 
-    func deleteUserFromLocal(_ user: ItemUIModel, completion: @escaping (Bool) -> Void) {
+    func deleteUserFromLocal(_ item: ItemUIModel, completion: @escaping (Bool) -> Void) {
         setLoading(true)
-        writer?.deleteUser(user.user ?? .init()) { [weak self] result in
+        writer?.deleteUser(item) { [weak self] result in
             DispatchQueue.main.async {
                 self?.setLoading(false)
                 switch result {
@@ -91,22 +91,22 @@ extension BaseViewModel {
 
 extension BaseViewModel {
     
-    func isUserFavorited(_ user: ItemUIModel) -> Bool {
-        guard let id = user.user?.id else { return false }
+    func isUserFavorited(_ item: ItemUIModel) -> Bool {
+        guard let id = item.user?.id else { return false }
         return favoriteUserIds.contains(id)
     }
 
-    func toggleFavorite(for user: ItemUIModel) {
-        guard let id = user.user?.id else { return }
+    func toggleFavorite(for item: ItemUIModel) {
+        guard let id = item.user?.id else { return }
 
-        if isUserFavorited(user) {
-            deleteUserFromLocal(user, completion: { [weak self] success in
+        if isUserFavorited(item) {
+            deleteUserFromLocal(item, completion: { [weak self] success in
                 if success {
                     self?.favoriteUserIds.remove(id)
                 }
             })
         } else {
-            addUserToLocal(user, completion: { [weak self] success in
+            addUserToLocal(item, completion: { [weak self] success in
                 if success {
                     self?.favoriteUserIds.insert(id)
                 }

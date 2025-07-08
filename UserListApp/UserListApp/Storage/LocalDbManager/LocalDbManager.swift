@@ -36,13 +36,15 @@ extension LocalDbManager: ReadableItemService {
         let response = ItemResponse(users: users, total: users.count, skip: 0, limit: users.count)
         completion(.success(response))
     }
-    
-    
 }
 
 extension LocalDbManager: WritableItemService {
     // Add user
-    func addUser(_ user: User, completion: @escaping (Result<Void, NetworkErrors>) -> Void) {
+    func addUser(_ item: ItemUIModel, completion: @escaping (Result<Void, NetworkErrors>) -> Void) {
+        guard let user = item.user else {
+            return completion(.failure(.storageFailure))
+        }
+        
         var currentUsers = fetchAllUsers()
         guard !currentUsers.contains(user) else {
             return completion(.failure(.storageFailure))
@@ -57,7 +59,11 @@ extension LocalDbManager: WritableItemService {
     }
     
     // Delete user
-    func deleteUser(_ user: User, completion: @escaping (Result<Void, NetworkErrors>) -> Void) {
+    func deleteUser(_ item: ItemUIModel, completion: @escaping (Result<Void, NetworkErrors>) -> Void) {
+        guard let user = item.user else {
+            return completion(.failure(.storageFailure))
+        }
+        
         var currentUsers = fetchAllUsers()
         let originalCount = currentUsers.count
         currentUsers.removeAll { $0.id == user.id }
