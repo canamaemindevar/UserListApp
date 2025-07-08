@@ -51,7 +51,7 @@ private extension ListViewModel {
         case .success(let success):
             if !success.users.isNilOrEmpty {
                 DispatchQueue.main.async {
-                    self.users = (success.users ?? []).map {ItemUIModel(responseModel: $0, isFavorite: false)}
+                    self.users = (success.users ?? []).map {ItemUIModel(responseModel: $0, isFavorite: self.favoriteUserIds.contains($0.id ?? 0))}
                 }
             }
             
@@ -59,5 +59,15 @@ private extension ListViewModel {
             self.showError(failure)
         }
         self.setLoading(false)
+    }
+    
+    private func refreshUserFavorites() {
+        DispatchQueue.main.async {
+            self.users = self.users.map { user in
+                var updatedUser = user
+                updatedUser.isFavorite = self.isUserFavorited(user)
+                return updatedUser
+            }
+        }
     }
 }
