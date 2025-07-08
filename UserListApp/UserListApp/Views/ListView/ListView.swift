@@ -28,6 +28,7 @@ struct ListView: View {
                             appCoordinator.pushTofavoritesTab(.detail(user))
                         } onFavoriteToggle: {
                             viewModel.toggleFavorite(for: user)
+                            viewModel.refreshUserFavorites()
                         }
 
                     }

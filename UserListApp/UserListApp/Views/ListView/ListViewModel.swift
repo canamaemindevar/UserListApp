@@ -36,9 +36,20 @@ final class ListViewModel: BaseViewModel {
 extension ListViewModel {
     
     func fetchUsers () {
+        self.loadFavorites()
         self.setLoading(true)
         itemService.loadItems { [weak self] result in
             self?.handleFetchUserResponse(result)
+        }
+    }
+    
+    func refreshUserFavorites() {
+        DispatchQueue.main.async {
+            self.users = self.users.map { user in
+                var updatedUser = user
+                updatedUser.isFavorite = self.isUserFavorited(user)
+                return updatedUser
+            }
         }
     }
 }
@@ -59,15 +70,5 @@ private extension ListViewModel {
             self.showError(failure)
         }
         self.setLoading(false)
-    }
-    
-    private func refreshUserFavorites() {
-        DispatchQueue.main.async {
-            self.users = self.users.map { user in
-                var updatedUser = user
-                updatedUser.isFavorite = self.isUserFavorited(user)
-                return updatedUser
-            }
-        }
     }
 }
