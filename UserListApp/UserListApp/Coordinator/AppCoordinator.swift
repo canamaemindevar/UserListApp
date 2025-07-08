@@ -12,7 +12,7 @@ final class AppCoordinator: ObservableObject {
     @Published var homeTabPath = NavigationPath()
     @Published var favoritesTabPath = NavigationPath()
     
-    func pushToRedTab(_ page: UserAppPages) {
+    func pushToHomeTab(_ page: UserAppPages) {
         homeTabPath.append(page)
     }
     
@@ -47,8 +47,13 @@ final class AppCoordinator: ObservableObject {
             EmptyView()
         case .favorites:
             EmptyView()
-        case .detail:
-             EmptyView()
+        case .detail(let model):
+            if let userModel = model as? ItemUIModel {
+                  DetailView(user: userModel)
+              } else {
+                  Text("❌ Invalid data")
+              }
+            
         }
     }
 }

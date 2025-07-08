@@ -9,7 +9,7 @@ import SwiftUI
 indirect enum UserAppPages: Identifiable,Hashable {
     case users
     case favorites
-    case detail
+    case detail(AnyHashable)
 
     
     var id: String {

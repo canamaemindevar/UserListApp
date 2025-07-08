@@ -8,7 +8,7 @@ import Foundation
 
 final class ListViewModel: BaseViewModel {
     
-    @Published var users: [User] = []
+    @Published var users: [ItemUIModel] = []
     @Published var searchText: String = ""
     
     private let itemService: ReadableItemService
@@ -20,15 +20,15 @@ final class ListViewModel: BaseViewModel {
         self.loadFavorites()
     }
     
-    var filteredUsers: [User] {
+    var filteredUsers: [ItemUIModel] {
         guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return users
         }
         
         return users.filter {
-            ($0.firstName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-            ($0.lastName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-            ($0.username?.localizedCaseInsensitiveContains(searchText) ?? false)
+            ($0.user?.firstName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            ($0.user?.lastName?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            ($0.user?.username?.localizedCaseInsensitiveContains(searchText) ?? false)
         }
     }
 }
@@ -51,7 +51,7 @@ private extension ListViewModel {
         case .success(let success):
             if !success.users.isNilOrEmpty {
                 DispatchQueue.main.async {
-                    self.users = success.users ?? []
+                    self.users = (success.users ?? []).map {ItemUIModel(responseModel: $0, isFavorite: false)}
                 }
             }
             

@@ -23,17 +23,13 @@ struct ListView: View {
             
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 12) {
-                    ForEach(viewModel.filteredUsers, id: \.id) { user in
-                        CellView(
-                            uiModel: ItemUIModel(
-                                responseModel: user,
-                                isFavorite: viewModel.isUserFavorited(user),
-                                selection: {
-//                                    appCoordinator.pushToRedTab(.detail(user))
-                                },
-                                onFavoriteToggle: { viewModel.toggleFavorite(for: user) }
-                            )
-                        )
+                    ForEach(viewModel.filteredUsers, id: \.user?.id) { user in
+                        CellView(uiModel: user) {
+                            appCoordinator.pushTofavoritesTab(.detail(user))
+                        } onFavoriteToggle: {
+                            viewModel.toggleFavorite(for: user)
+                        }
+
                     }
                 }
                 .padding()

@@ -17,7 +17,7 @@ struct DetailView: View {
     
     var body: some View {
         ScrollView {
-            
+            Text(viewModel.user.user?.firstName ?? "First Name")
         }
     }
 }

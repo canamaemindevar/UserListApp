@@ -39,9 +39,9 @@ class BaseViewModel: ObservableObject {
 
 extension BaseViewModel {
     
-    func addUserToLocal(_ user: User, completion: @escaping (Bool) -> Void) {
+    func addUserToLocal(_ user: ItemUIModel, completion: @escaping (Bool) -> Void) {
         setLoading(true)
-        writer?.addUser(user) { [weak self] result in
+        writer?.addUser(user.user ?? .init()) { [weak self] result in
             DispatchQueue.main.async {
                 self?.setLoading(false)
                 switch result {
@@ -56,9 +56,9 @@ extension BaseViewModel {
         }
     }
 
-    func deleteUserFromLocal(_ user: User, completion: @escaping (Bool) -> Void) {
+    func deleteUserFromLocal(_ user: ItemUIModel, completion: @escaping (Bool) -> Void) {
         setLoading(true)
-        writer?.deleteUser(user) { [weak self] result in
+        writer?.deleteUser(user.user ?? .init()) { [weak self] result in
             DispatchQueue.main.async {
                 self?.setLoading(false)
                 switch result {
@@ -91,13 +91,13 @@ extension BaseViewModel {
 
 extension BaseViewModel {
     
-    func isUserFavorited(_ user: User) -> Bool {
-        guard let id = user.id else { return false }
+    func isUserFavorited(_ user: ItemUIModel) -> Bool {
+        guard let id = user.user?.id else { return false }
         return favoriteUserIds.contains(id)
     }
 
-    func toggleFavorite(for user: User) {
-        guard let id = user.id else { return }
+    func toggleFavorite(for user: ItemUIModel) {
+        guard let id = user.user?.id else { return }
 
         if isUserFavorited(user) {
             deleteUserFromLocal(user, completion: { [weak self] success in

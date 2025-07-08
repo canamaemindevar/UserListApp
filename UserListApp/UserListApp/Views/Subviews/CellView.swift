@@ -10,6 +10,8 @@ import SwiftUI
 struct CellView: View {
     
     let uiModel: ItemUIModel
+    let selection: () -> Void
+    let onFavoriteToggle: () -> Void
     
     var body: some View {
         HStack(spacing: 0) {
@@ -51,7 +53,7 @@ struct CellView: View {
                     
                     // Sağ tarafta favorite button
                     Button(action: {
-                        uiModel.onFavoriteToggle()
+                        onFavoriteToggle()
                     }) {
                         Image(systemName: uiModel.isFavorite ? "star.fill" : "star")
                             .foregroundColor(uiModel.isFavorite ? .yellow : .gray)
@@ -60,7 +62,10 @@ struct CellView: View {
                 }
                 
                 // MARK: Alt Satır
-                Button(action: uiModel.selection) {
+                
+                Button {
+                    selection()
+                } label: {
                     HStack {
                         Text("See Detail")
                             .font(.subheadline)
@@ -72,6 +77,7 @@ struct CellView: View {
                     }
                     .padding(.top, 6)
                 }
+
             }
             .padding()
             .background(

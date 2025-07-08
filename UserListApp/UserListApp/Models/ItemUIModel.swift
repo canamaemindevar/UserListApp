@@ -6,24 +6,21 @@
 //
 import SwiftUICore
 
-struct ItemUIModel {
+struct ItemUIModel: Hashable {
     let user: User?
-    let selection: () -> Void
-    let onFavoriteToggle: () -> Void
+ 
     let isFavorite: Bool
     let leftCornerColor: Color
 
     init(
         responseModel: User?,
         isFavorite: Bool,
-        color: Color = Color.random,
-        selection: @escaping () -> Void,
-        onFavoriteToggle: @escaping () -> Void
+        color: Color = Color.random
     ) {
         self.user = responseModel
-        self.selection = selection
+     
         self.isFavorite = isFavorite
         self.leftCornerColor = color
-        self.onFavoriteToggle = onFavoriteToggle
+       
     }
 }
