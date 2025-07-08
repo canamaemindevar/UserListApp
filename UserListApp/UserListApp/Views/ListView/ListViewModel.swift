@@ -10,11 +10,15 @@ final class ListViewModel: BaseViewModel {
     
     @Published var users: [ItemUIModel] = []
     @Published var searchText: String = ""
+    var isFavoritePath: Bool = false
     
     private let itemService: ReadableItemService
     
     init(itemService: ReadableItemService) {
         self.itemService = itemService
+        if itemService is LocalDbManager {
+            self.isFavoritePath = true
+        }
         super.init()
         self.writer = LocalDbManager()
         self.loadFavorites()

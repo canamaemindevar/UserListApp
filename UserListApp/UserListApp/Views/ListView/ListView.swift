@@ -25,7 +25,12 @@ struct ListView: View {
                 LazyVStack(alignment: .leading, spacing: 12) {
                     ForEach(viewModel.filteredUsers, id: \.user?.id) { user in
                         CellView(uiModel: user) {
-                            appCoordinator.pushTofavoritesTab(.detail(user))
+                            if viewModel.isFavoritePath {
+                                appCoordinator.pushTofavoritesTab(.detail(user))
+                            } else {
+                                appCoordinator.pushToHomeTab(.detail(user))
+                            }
+                            
                         } onFavoriteToggle: {
                             viewModel.toggleFavorite(for: user)
                             viewModel.refreshUserFavorites()
